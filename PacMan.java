@@ -200,13 +200,13 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         for (Block wall : walls) {
             g.drawImage(wall.image, wall.x, wall.y, wall.width, wall.height, this);
         }
-
+        
         // draw food
         g.setColor(Color.WHITE);
         for (Block food : foods) {
             g.fillRect(food.x, food.y, food.width, food.height);
         }
-
+        
         // draw ghosts
         for (Block ghost : ghosts) {
             g.drawImage(ghost.image, ghost.x, ghost.y, ghost.width, ghost.height, this);
