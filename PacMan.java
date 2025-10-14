@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
+import java.util.Random;
 
 import javax.swing.*;
 
@@ -100,7 +101,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "XXXX XXXX XXXX XXXX",
             "OOOX X       X XOOO",
             "XXXX X XXrXX X XXXX",
-            "O       bpo       O",
+            "O      XbpoX      O",
             "XXXX X XXXXX X XXXX",
             "OOOX X       X XOOO",
             "XXXX X XXXXX X XXXX",
@@ -118,6 +119,9 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     HashSet<Block> foods;
     HashSet<Block> ghosts;
     Block pacman;
+    
+    char[] directions = { 'U', 'D', 'L', 'R' };
+    Random random = new Random();
 
     PacMan() {
         setPreferredSize(new Dimension(boardWidth, boardHight));
@@ -137,6 +141,10 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         pacmanRightImage = new ImageIcon(getClass().getResource("/images/pacmanRight.png")).getImage();
 
         loadMap();
+        for (Block ghost : ghosts) {
+            char newDirection = directions[random.nextInt(4)];
+            ghost.updateDirection(newDirection);
+        }
         // HOW LONG IT TAKES TO START TIMER, MILLISECONDS GONE BETWEEN FRAMES
         Timer timer = new Timer(50, this); // 20 FPS
         timer.start();
@@ -217,8 +225,25 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
                 break;
             }
         }
+    
+        for (Block ghost : ghosts) {
+            if (ghost.y == tileSize*9 && ghost.direction != 'U' && ghost.direction != 'D') {
+                ghost.updateDirection('U');
+            }
+            ghost.x += ghost.velocityX;
+            ghost.y += ghost.velocityY;
+            for (Block wall : walls) {
+                if (collision(ghost, wall) || ghost.x <= 0 || ghost.x + ghost.width >= boardWidth) {
+                    ghost.x -= ghost.velocityX;
+                    ghost.y -= ghost.velocityY;
+                    char newDirection = directions[random.nextInt(4)];
+                    ghost.updateDirection(newDirection);
+                }
+            }
+        }
     }
-
+    
+    //checks if two blocks are colliding
     public boolean collision(Block a, Block b) {
         return (a.x < b.x + b.width &&
                 a.x + a.width > b.x &&
