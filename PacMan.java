@@ -101,7 +101,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "XXXX XXXX XXXX XXXX",
             "OOOX X       X XOOO",
             "XXXX X XXrXX X XXXX",
-            "O      XbpoX      O",
+            "X      XbpoX      X",
             "XXXX X XXXXX X XXXX",
             "OOOX X       X XOOO",
             "XXXX X XXXXX X XXXX",
@@ -122,6 +122,10 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     
     char[] directions = { 'U', 'D', 'L', 'R' };
     Random random = new Random();
+    int score = 0;
+    int lives = 3;
+    boolean gameOver = false;
+
 
     PacMan() {
         setPreferredSize(new Dimension(boardWidth, boardHight));
@@ -241,8 +245,18 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
                 }
             }
         }
+        Block eatenFood = null;
+        for (Block food: foods){
+            if (collision(pacman, eatenFood)){
+                eatenFood = food;
+                score += 10;
+            }
+        }
+        foods.remove(eatenFood);
     }
     
+
+
     //checks if two blocks are colliding
     public boolean collision(Block a, Block b) {
         return (a.x < b.x + b.width &&
