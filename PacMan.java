@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -214,6 +215,15 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
 
         // draw pacman
         g.drawImage(pacman.image, pacman.x, pacman.y, pacman.width, pacman.height, this);
+
+        //draw score
+        g.setFont(new Font("Arial", Font.PLAIN, 18));
+        if (gameOver){
+            g.drawString("Game over "+ String.valueOf(score), tileSize/2, tileSize/2);
+        }
+        else{
+            g.drawString("x" + String.valueOf(lives) + " Score: " + String.valueOf(score), tileSize/2, tileSize/2);
+        }
     }
 
     public void move() {
@@ -247,9 +257,10 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         }
         Block eatenFood = null;
         for (Block food: foods){
-            if (collision(pacman, eatenFood)){
+            if (collision(pacman, food)){
                 eatenFood = food;
                 score += 10;
+                break;
             }
         }
         foods.remove(eatenFood);
