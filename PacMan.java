@@ -357,12 +357,10 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     public void keyPressed(KeyEvent e) {
 
     }
-//implementing states
+
     @Override
     public void keyReleased(KeyEvent e) {
-        if (currentState == GameState.MENU) {
-
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
             pacman.updateDirection('U');
             pacman.image = pacmanUpImage;
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
