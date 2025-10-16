@@ -12,6 +12,8 @@ import java.util.Random;
 import javax.swing.*;
 
 public class PacMan extends JPanel implements ActionListener, KeyListener {
+    private GameState currentState = GameState.MENU;
+
     class Block {
         int x;
         int y;
@@ -355,10 +357,29 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     public void keyPressed(KeyEvent e) {
 
     }
-
+//implementing states
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
+        if (currentState == GameState.MENU) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            currentState = GameState.LEVEL_SELECT;
+            repaint();
+        }
+    } else if (currentState == GameState.LEVEL_SELECT) {
+        if (e.getKeyCode() == KeyEvent.VK_1) {
+            startGame(1);
+        } else if (e.getKeyCode() == KeyEvent.VK_2) {
+            startGame(2);
+        } else if (e.getKeyCode() == KeyEvent.VK_3) {
+            startGame(3);
+        }
+    } else if (currentState == GameState.MAZE_SELECT) {
+        // choose between different maps
+    } else if (currentState == GameState.GAME_OVER) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            currentState = GameState.MENU;
+            resetAll();
+        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             pacman.updateDirection('U');
             pacman.image = pacmanUpImage;
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -372,5 +393,6 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             pacman.image = pacmanRightImage;
         }
     }
+
 
 }
