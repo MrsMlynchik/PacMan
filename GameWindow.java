@@ -27,7 +27,7 @@ public class GameWindow extends JFrame implements KeyListener {
         addKeyListener(this);
         setupMenuPanel();
         setupLevelSelectPanel();
-        
+
         showMenu();
         setVisible(true);
     }
@@ -73,6 +73,9 @@ public class GameWindow extends JFrame implements KeyListener {
         easy.setForeground(Color.WHITE);
         normal.setForeground(Color.WHITE);
         hard.setForeground(Color.WHITE);
+        easy.setFont(new Font("Arial", Font.BOLD, 24));
+        normal.setFont(new Font("Arial", Font.BOLD, 24));
+        hard.setFont(new Font("Arial", Font.BOLD, 24));
         levelPanel.add(easy);
         levelPanel.add(normal);
         levelPanel.add(hard);
@@ -95,6 +98,11 @@ public class GameWindow extends JFrame implements KeyListener {
         currentState = GameState.LEVEL_SELECT;
     }
 
+    private void showSelectMaze() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'showMazeSelect'");
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
         // TODO Auto-generated method stub
@@ -110,8 +118,21 @@ public class GameWindow extends JFrame implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'keyReleased'");
+        switch (currentState){
+            case MENU:
+            if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                showSelectLevel();
+            break;
+            case LEVEL_SELECT:
+                if (e.getKeyCode() == KeyEvent.VK_1 ||
+                    e.getKeyCode() == KeyEvent.VK_2 ||
+                    e.getKeyCode() == KeyEvent.VK_3)
+                    showSelectMaze();
+                break;
+        }
     }
+
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new GameWindow());
