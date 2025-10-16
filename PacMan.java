@@ -361,24 +361,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         if (currentState == GameState.MENU) {
-        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            currentState = GameState.LEVEL_SELECT;
-            repaint();
-        }
-    } else if (currentState == GameState.LEVEL_SELECT) {
-        if (e.getKeyCode() == KeyEvent.VK_1) {
-            startGame(1);
-        } else if (e.getKeyCode() == KeyEvent.VK_2) {
-            startGame(2);
-        } else if (e.getKeyCode() == KeyEvent.VK_3) {
-            startGame(3);
-        }
-    } else if (currentState == GameState.MAZE_SELECT) {
-        // choose between different maps
-    } else if (currentState == GameState.GAME_OVER) {
-        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            currentState = GameState.MENU;
-            resetAll();
+
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             pacman.updateDirection('U');
             pacman.image = pacmanUpImage;
