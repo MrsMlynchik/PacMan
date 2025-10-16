@@ -3,6 +3,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -25,6 +26,8 @@ public class GameWindow extends JFrame implements KeyListener {
         setLocationRelativeTo(null);
         addKeyListener(this);
         setupMenuPanel();
+        setupLevelSelectPanel();
+        
         showMenu();
         setVisible(true);
     }
@@ -54,6 +57,27 @@ public class GameWindow extends JFrame implements KeyListener {
         menuPanel.add(inner);
     }
 
+    //Select Level
+    private void setupLevelSelectPanel(){
+        levelPanel = new JPanel();
+        levelPanel.setBackground(Color.BLACK);
+        levelPanel.setLayout(new GridLayout(4,1));
+        JLabel label = new JLabel("Select Level:", SwingConstants.CENTER);
+        label.setForeground(Color.CYAN);
+        label.setFont(new Font("Arial", Font.BOLD, 36));
+        levelPanel.add(label);
+
+        JLabel easy = new JLabel("1 - Easy", SwingConstants.CENTER);
+        JLabel normal = new JLabel("2 - Normal", SwingConstants.CENTER);
+        JLabel hard = new JLabel("3 - Hard", SwingConstants.CENTER);
+        easy.setForeground(Color.WHITE);
+        normal.setForeground(Color.WHITE);
+        hard.setForeground(Color.WHITE);
+        levelPanel.add(easy);
+        levelPanel.add(normal);
+        levelPanel.add(hard);
+    }
+
     //State
     private void showMenu() {
         getContentPane().removeAll();
@@ -61,6 +85,14 @@ public class GameWindow extends JFrame implements KeyListener {
         revalidate();
         repaint();
         currentState = GameState.MENU;
+    }
+
+    private void showSelectLevel(){
+        getContentPane().removeAll();
+        getContentPane().add(levelPanel);
+        revalidate();
+        repaint();
+        currentState = GameState.LEVEL_SELECT;
     }
 
     @Override
