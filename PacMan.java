@@ -12,7 +12,6 @@ import java.util.Random;
 import javax.swing.*;
 
 public class PacMan extends JPanel implements ActionListener, KeyListener {
-    private GameState currentState = GameState.MENU;
 
     class Block {
         int x;
