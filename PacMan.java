@@ -12,6 +12,7 @@ import java.util.Random;
 import javax.swing.*;
 
 public class PacMan extends JPanel implements ActionListener, KeyListener {
+    private int currentMazeIndex = 0;
 
     class Block {
         int x;
@@ -99,7 +100,9 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     // the maze
     // X = Wall, O = nothing, P = PacMan
     // Ghosts: b = blue, r = red, o = orange, p = pink
-    private String[] tileMap = {
+    private String[][] tileMap = {
+        // Maze A - Classic 
+        {
             "XXXXXXXXXXXXXXXXXXX",
             "X        X        X",
             "X XX XXX X XXX XX X",
@@ -121,6 +124,47 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "X XXXXXX X XXXXXX X",
             "X                 X",
             "XXXXXXXXXXXXXXXXXXX"
+        },
+        // Maze B - Crazy
+        {
+            "XXXXXXXXXXXXXXXXXXX",
+            "XP      X      b  X",
+            "X XXXX XXX XXXX XX",
+            "X X    X X    X  X",
+            "X X XX X X XX X XX",
+            "X X X     X X X  X",
+            "X   XXXXXXX   XXXX",
+            "XXXX       XXXXX XX",
+            "X   X r X X X o  X",
+            "X X X   X X   X  X",
+            "X X XXXXX XXXXX XX",
+            "X p   X     X    X",
+            "X XXXXX XX XXXXX X",
+            "X     X  X  X    X",
+            "XXXXXXXXXXXXXXXXXXX"
+        },
+        // Maze C - Spiral
+        {
+            "XXXXXXXXXXXXXXXXXXX",
+            "XP                X",
+            "X XXXXXXXXXXXXXXX X",
+            "X X             X X",
+            "X X XXXXXXXXXXX X X",
+            "X X X         X X X",
+            "X X X XXXXXXX X X X",
+            "X X X X     X X X X",
+            "X X X X XXX X X X X",
+            "X X X X XoX X X X X",
+            "X X X X XXX X X X X",
+            "X X X X     X X X X",
+            "X X X XXXXXXX X X X",
+            "X X X         X X X",
+            "X X XXXXXXXXXXX X X",
+            "X X             X X",
+            "X XXXXXXXXXXXXXXX X",
+            "X                bX",
+            "XXXXXXXXXXXXXXXXXXX"
+        }
     };
 
     HashSet<Block> walls;
@@ -168,9 +212,10 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         foods = new HashSet<Block>();
         ghosts = new HashSet<Block>();
 
-        for (int r = 0; r < rows; r++) {
-            for (int col = 0; col < columns; col++) {
-                String row = tileMap[r];
+        String[] maze = tileMap[currentMazeIndex];
+        for (int r = 0; r < maze.length; r++) {
+            String row = maze[r];
+            for (int col = 0; col < row.length(); col++) {
                 char tileCharAtPos = row.charAt(col);
 
                 int x = col * tileSize;
@@ -371,6 +416,19 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             pacman.updateDirection('R');
             pacman.image = pacmanRightImage;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_1) {
+            currentMazeIndex = 0;
+            loadMap();
+            resetPositions();
+        } else if (e.getKeyCode() == KeyEvent.VK_2) {
+            currentMazeIndex = 1;
+            loadMap();
+            resetPositions();
+        } else if (e.getKeyCode() == KeyEvent.VK_3) {
+            currentMazeIndex = 2;
+            loadMap();
+            resetPositions();
         }
     }
 
