@@ -8,12 +8,10 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class GameWindow extends JFrame implements KeyListener {
-    private enum GameEnum {
+    private enum GameState {
         MENU, LEVEL_SELECT, MAZE_SELECT, PLAYING, GAME_OVER
     }
     private GameState currentState = GameState.MENU;
-
-    //private GameState currentState = GameState.MENU;
 
     private JPanel menuPanel, levelPanel, mazePanel;
     private PacMan gamePanel;
@@ -123,6 +121,16 @@ public class GameWindow extends JFrame implements KeyListener {
         currentState = GameState.LEVEL_SELECT;
     }
 
+    private void startGame(int level) {
+        // remove any menu panel
+        getContentPane().removeAll();
+        gamePanel = new PacMan(); // ← uses your PacMan class
+        getContentPane().add(gamePanel);
+        revalidate();
+        repaint();
+        currentState = GameState.PLAYING;
+    }
+
     private void showSelectMaze() {
         // TODO Auto-generated method stub
         getContentPane().removeAll();
@@ -153,12 +161,14 @@ public class GameWindow extends JFrame implements KeyListener {
                 if (e.getKeyCode() == KeyEvent.VK_A ||
                     e.getKeyCode() == KeyEvent.VK_B ||
                     e.getKeyCode() == KeyEvent.VK_C)
-                    //startGame(1);
+                    startGame(1);
                 break;
+            case PLAYING:
+    if (gamePanel != null)
+        gamePanel.keyReleased(e);
+    break;
         }
     }
-
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new GameWindow());
