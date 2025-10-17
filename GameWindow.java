@@ -27,6 +27,8 @@ public class GameWindow extends JFrame implements KeyListener {
         addKeyListener(this);
         setupMenuPanel();
         setupLevelSelectPanel();
+        setupMazeSelectPanel();
+
 
         showMenu();
         setVisible(true);
@@ -80,6 +82,29 @@ public class GameWindow extends JFrame implements KeyListener {
         levelPanel.add(normal);
         levelPanel.add(hard);
     }
+    // Select Maze
+    private void setupMazeSelectPanel(){
+        mazePanel = new JPanel();
+        mazePanel.setBackground(Color.BLACK);
+        mazePanel.setLayout(new GridLayout(4, 1));
+        JLabel label = new JLabel("Select Maze:", SwingConstants.CENTER);
+        label.setForeground(Color.ORANGE);
+        label.setFont(new Font("Arial", Font.BOLD, 36));
+        mazePanel.add(label);
+
+        JLabel a = new JLabel("A - Classic", SwingConstants.CENTER);
+        JLabel b = new JLabel("B - Crazy", SwingConstants.CENTER);
+        JLabel c = new JLabel("C - Tiny", SwingConstants.CENTER);
+        a.setForeground(Color.WHITE);
+        b.setForeground(Color.WHITE);
+        c.setForeground(Color.WHITE);
+        a.setFont(new Font("Arial", Font.BOLD, 24));
+        b.setFont(new Font("Arial", Font.BOLD, 24));
+        c.setFont(new Font("Arial", Font.BOLD, 24));
+        mazePanel.add(a);
+        mazePanel.add(b);
+        mazePanel.add(c);
+    }
 
     //State
     private void showMenu() {
@@ -100,20 +125,15 @@ public class GameWindow extends JFrame implements KeyListener {
 
     private void showSelectMaze() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'showMazeSelect'");
+        getContentPane().removeAll();
+        getContentPane().add(mazePanel);
+        revalidate();
+        repaint();
+        currentState = GameState.MAZE_SELECT;
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'keyTyped'");
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'keyPressed'");
-    }
+    @Override public void keyPressed(KeyEvent e) {}
+    @Override public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyReleased(KeyEvent e) {
@@ -128,6 +148,12 @@ public class GameWindow extends JFrame implements KeyListener {
                     e.getKeyCode() == KeyEvent.VK_2 ||
                     e.getKeyCode() == KeyEvent.VK_3)
                     showSelectMaze();
+                break;
+             case MAZE_SELECT:
+                if (e.getKeyCode() == KeyEvent.VK_A ||
+                    e.getKeyCode() == KeyEvent.VK_B ||
+                    e.getKeyCode() == KeyEvent.VK_C)
+                    //startGame(1);
                 break;
         }
     }
