@@ -58,19 +58,39 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         }
 
         void updateVelocity() {
-            if (this.direction == 'U') {
-                this.velocityX = 0;
-                this.velocityY = -4 * (levelselected + 1);
-            } else if (this.direction == 'D') {
-                this.velocityX = 0;
-                this.velocityY = 4 * (levelselected + 1);
-            } else if (this.direction == 'L') {
-                this.velocityX = -4 * (levelselected + 1);
-                this.velocityY = 0;
-            } else if (this.direction == 'R') {
-                this.velocityX = 4 * (levelselected + 1);
-                this.velocityY = 0;
+            
+            if(levelselected==2){
+                if (this.direction == 'U') {
+                    this.velocityX = 0;
+                    this.velocityY = -4*2;
+                } else if (this.direction == 'D') {
+                    this.velocityX = 0;
+                    this.velocityY = 4*2 ;
+                } else if (this.direction == 'L') {
+                    this.velocityX = -4*2 ;
+                    this.velocityY = 0;
+                } else if (this.direction == 'R') {
+                    this.velocityX = 4*2 ;
+                    this.velocityY = 0;
+                }
+
+
+            }else{
+                if (this.direction == 'U') {
+                    this.velocityX = 0;
+                    this.velocityY = -4*(levelselected+1) ;
+                } else if (this.direction == 'D') {
+                    this.velocityX = 0;
+                    this.velocityY = 4*(levelselected+1)  ;
+                } else if (this.direction == 'L') {
+                    this.velocityX = -4 *(levelselected+1) ;
+                    this.velocityY = 0;
+                } else if (this.direction == 'R') {
+                    this.velocityX = 4*(levelselected+1)  ;
+                    this.velocityY = 0;
+                }
             }
+            
         }
 
         void reset() {
@@ -187,6 +207,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     boolean gameOver = false;
     private Timer gameLoop;
 
+    //constructor
     public PacMan(int level,char maze){
         this.levelselected = level;
         this.mazeselected = maze;
@@ -228,11 +249,10 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             maze=tileMap1;
         }else if(mazeselected=='B'){
             maze=tilemap2;
-
         }else if (mazeselected=='C'){
             maze=tileMap3;
         }
-        System.out.println(mazeselected);
+
         for (int r = 0; r < maze.length; r++) {
             String row = maze[r];
             for (int col = 0; col < row.length(); col++) {
