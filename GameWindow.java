@@ -8,19 +8,22 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class GameWindow extends JFrame implements KeyListener {
-    private enum GameState {
+    public enum GameState {
         MENU, LEVEL_SELECT, MAZE_SELECT, PLAYING, GAME_OVER
     }
-    private GameState currentState = GameState.MENU;
+    public int selectedLevel = 1;
+    public char selectedMaze = 'A';
+
+    public GameState currentState = GameState.MENU;
 
     private JPanel menuPanel, levelPanel, mazePanel;
-    private PacMan gamePanel;
+    public PacMan gamePanel;
 
     public GameWindow() {
         setTitle("Pac-Man");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
-        setSize(640, 720);
+        setSize(623, 711);
         setLocationRelativeTo(null);
         addKeyListener(this);
         setupMenuPanel();
@@ -105,7 +108,7 @@ public class GameWindow extends JFrame implements KeyListener {
     }
 
     //State
-    private void showMenu() {
+    public void showMenu() {
         getContentPane().removeAll();
         getContentPane().add(menuPanel);
         revalidate();
@@ -113,7 +116,7 @@ public class GameWindow extends JFrame implements KeyListener {
         currentState = GameState.MENU;
     }
 
-    private void showSelectLevel(){
+    public void showSelectLevel(){
         getContentPane().removeAll();
         getContentPane().add(levelPanel);
         revalidate();
@@ -121,17 +124,20 @@ public class GameWindow extends JFrame implements KeyListener {
         currentState = GameState.LEVEL_SELECT;
     }
 
-    private void startGame(int level) {
+    public void startGame(int level,char maze) {
         // remove any menu panel
         getContentPane().removeAll();
-        gamePanel = new PacMan(); // ← uses your PacMan class
+         // ← uses your PacMan class
+        gamePanel = new PacMan(level,maze);
+        gamePanel.levelselected = level;
+        gamePanel.mazeselected = maze;
         getContentPane().add(gamePanel);
         revalidate();
         repaint();
         currentState = GameState.PLAYING;
     }
 
-    private void showSelectMaze() {
+    public void showSelectMaze() {
         // TODO Auto-generated method stub
         getContentPane().removeAll();
         getContentPane().add(mazePanel);
@@ -139,38 +145,61 @@ public class GameWindow extends JFrame implements KeyListener {
         repaint();
         currentState = GameState.MAZE_SELECT;
     }
+     @Override
+    public void keyPressed(KeyEvent e) {
+    }
 
-    @Override public void keyPressed(KeyEvent e) {}
-    @Override public void keyTyped(KeyEvent e) {}
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
 
     @Override
     public void keyReleased(KeyEvent e) {
         // TODO Auto-generated method stub
-        switch (currentState){
+        switch (currentState) {
             case MENU:
-            if (e.getKeyCode() == KeyEvent.VK_ENTER)
-                showSelectLevel();
-            break;
-            case LEVEL_SELECT:
-                if (e.getKeyCode() == KeyEvent.VK_1 ||
-                    e.getKeyCode() == KeyEvent.VK_2 ||
-                    e.getKeyCode() == KeyEvent.VK_3)
-                    showSelectMaze();
+                if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                    showSelectLevel();
                 break;
-             case MAZE_SELECT:
-                if (e.getKeyCode() == KeyEvent.VK_A ||
-                    e.getKeyCode() == KeyEvent.VK_B ||
-                    e.getKeyCode() == KeyEvent.VK_C)
-                    startGame(1);
+            case LEVEL_SELECT:
+                if (e.getKeyCode() == KeyEvent.VK_1) {
+                    selectedLevel = 1;
+                    showSelectMaze();
+                }
+                if (e.getKeyCode() == KeyEvent.VK_2) {
+                    selectedLevel = 2;
+                    showSelectMaze();
+                }
+                if (e.getKeyCode() == KeyEvent.VK_3) {
+                    selectedLevel = 3;
+                    showSelectMaze();
+                }
+                break;
+            case MAZE_SELECT:
+                if (e.getKeyCode() == KeyEvent.VK_A) {
+                    selectedMaze = 'A';
+                    startGame(selectedLevel, selectedMaze);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_B) {
+                    selectedMaze = 'B';
+                    startGame(selectedLevel, selectedMaze);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_C) {
+                    selectedMaze = 'C';
+                    startGame(selectedLevel, selectedMaze);
+                }
                 break;
             case PLAYING:
-    if (gamePanel != null)
-        gamePanel.keyReleased(e);
-    break;
+                if (gamePanel != null)
+                    gamePanel.keyReleased(e);
+                break;
         }
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new GameWindow());
     }
+
+   
 }

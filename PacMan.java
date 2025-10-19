@@ -12,7 +12,9 @@ import java.util.Random;
 import javax.swing.*;
 
 public class PacMan extends JPanel implements ActionListener, KeyListener {
-    private int currentMazeIndex = 0;
+    
+    public int levelselected;
+    public char mazeselected;
 
     class Block {
         int x;
@@ -58,15 +60,15 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         void updateVelocity() {
             if (this.direction == 'U') {
                 this.velocityX = 0;
-                this.velocityY = -4;
+                this.velocityY = -4 * (levelselected + 1);
             } else if (this.direction == 'D') {
                 this.velocityX = 0;
-                this.velocityY = 4;
+                this.velocityY = 4 * (levelselected + 1);
             } else if (this.direction == 'L') {
-                this.velocityX = -4;
+                this.velocityX = -4 * (levelselected + 1);
                 this.velocityY = 0;
             } else if (this.direction == 'R') {
-                this.velocityX = 4;
+                this.velocityX = 4 * (levelselected + 1);
                 this.velocityY = 0;
             }
         }
@@ -100,9 +102,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     // the maze
     // X = Wall, O = nothing, P = PacMan
     // Ghosts: b = blue, r = red, o = orange, p = pink
-    private String[][] tileMap = {
-        // Maze A - Classic 
-        {
+    private String[] tileMap1 = {
             "XXXXXXXXXXXXXXXXXXX",
             "X        X        X",
             "X XX XXX X XXX XX X",
@@ -112,7 +112,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "XXXX XXXX XXXX XXXX",
             "OOOX X       X XOOO",
             "XXXX X XXrXX X XXXX",
-            "X      XbpoX      X",
+            "O       bpo       O",
             "XXXX X XXXXX X XXXX",
             "OOOX X       X XOOO",
             "XXXX X XXXXX X XXXX",
@@ -123,11 +123,11 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "X    X   X   X    X",
             "X XXXXXX X XXXXXX X",
             "X                 X",
-            "XXXXXXXXXXXXXXXXXXX"
-        },
-        // Maze B - Twister
-        {
-           "XXXXXXXXXXXXXXXXXXX",
+            "XXXXXXXXXXXXXXXXXXX"       
+            };
+            // Maze B - Twister
+    private String[] tilemap2={
+            "XXXXXXXXXXXXXXXXXXX",
             "X   X     X     X X",
             "X X X XXX X XXX X X",
             "X X X   X X   X X X",
@@ -148,9 +148,9 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "X   X   P     X   X",
             "X                 X",
             "XXXXXXXXXXXXXXXXXXX"
-        },
-        // Level 3 – The Fortress
-        {
+            };
+            // Level 3 – The Fortress
+    private String[] tileMap3={
             "XXXXXXXXXXXXXXXXXXX",
             "X        X        X",
             "X XXXX X X XXXX X X",
@@ -172,8 +172,8 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "X   p    P    o   X",
             "X                 X",
             "XXXXXXXXXXXXXXXXXXX"
-        },
-    };
+            };    
+    
 
     HashSet<Block> walls;
     HashSet<Block> foods;
@@ -187,7 +187,10 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     boolean gameOver = false;
     private Timer gameLoop;
 
-    PacMan() {
+    public PacMan(int level,char maze){
+        this.levelselected = level;
+        this.mazeselected = maze;
+
         setPreferredSize(new Dimension(boardWidth, boardHight));
         setBackground(Color.BLACK);
         addKeyListener(this);
@@ -211,7 +214,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             ghost.updateDirection(newDirection);
         }
         // HOW LONG IT TAKES TO START TIMER, MILLISECONDS GONE BETWEEN FRAMES
-        gameLoop = new Timer(40, this); // 25 FPS
+        gameLoop = new Timer(60, this); // 25 FPS
         gameLoop.start();
     }
 
@@ -219,8 +222,17 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         walls = new HashSet<Block>();
         foods = new HashSet<Block>();
         ghosts = new HashSet<Block>();
+        String[] maze={};
 
-        String[] maze = tileMap[currentMazeIndex];
+        if(mazeselected=='A'){
+            maze=tileMap1;
+        }else if(mazeselected=='B'){
+            maze=tilemap2;
+
+        }else if (mazeselected=='C'){
+            maze=tileMap3;
+        }
+        System.out.println(mazeselected);
         for (int r = 0; r < maze.length; r++) {
             String row = maze[r];
             for (int col = 0; col < row.length(); col++) {
@@ -425,20 +437,8 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             pacman.updateDirection('R');
             pacman.image = pacmanRightImage;
         }
-        if (e.getKeyCode() == KeyEvent.VK_1) {
-            currentMazeIndex = 0;
-            loadMap();
-            resetPositions();
-        } else if (e.getKeyCode() == KeyEvent.VK_2) {
-            currentMazeIndex = 1;
-            loadMap();
-            resetPositions();
-        } else if (e.getKeyCode() == KeyEvent.VK_3) {
-            currentMazeIndex = 2;
-            loadMap();
-            resetPositions();
-        }
-    }
+       
 
+    }
 
 }
