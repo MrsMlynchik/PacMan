@@ -6,7 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.*;
@@ -28,6 +30,10 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         char direction = 'U';
         int velocityX = 0;
         int velocityY = 0;
+
+        boolean isPortal = false;
+        char portalId;
+        Color portalColor;
 
         Block(int x, int y, int width, int height, Image image, int startX, int startY) {
             this.x = x;
@@ -124,11 +130,11 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     // Ghosts: b = blue, r = red, o = orange, p = pink
     private String[] tileMap1 = {
             "XXXXXXXXXXXXXXXXXXX",
-            "X        X        X",
+            "X        X       4X",
             "X XX XXX X XXX XX X",
             "X                 X",
             "X XX X XXXXX X XX X",
-            "X    X       X    X",
+            "X   1X       X    X",
             "XXXX XXXX XXXX XXXX",
             "OOOX X       X XOOO",
             "XXXX X XXrXX X XXXX",
@@ -140,21 +146,21 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "X XX XXX X XXX XX X",
             "X  X     P     X  X",
             "XX X X XXXXX X X XX",
-            "X    X   X   X    X",
+            "X    X   X   X   2X",
             "X XXXXXX X XXXXXX X",
-            "X                 X",
+            "X3                X",
             "XXXXXXXXXXXXXXXXXXX"       
             };
             // Maze B - Twister
     private String[] tilemap2={
             "XXXXXXXXXXXXXXXXXXX",
-            "X   X     X     X X",
+            "X   X     X    3X X",
             "X X X XXX X XXX X X",
             "X X X   X X   X X X",
             "X X XXX X XXX X X X",
             "X X     X     X X X",
             "X XXX XXXXXXX XXX X",
-            "X   X   X X   X   X",
+            "X2  X   X X   X   X",
             "XXX X X X X X X XXX",
             "X  b    r p    o  X",
             "XXX X X X X X X XXX",
@@ -162,11 +168,11 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "X XXX XXXXXXX XXX X",
             "X X     X     X X X",
             "X X XXX X XXX X X X",
-            "X X X   X X   X X X",
+            "X X X4  X X   X X X",
             "X X X XXX XXX X X X",
             "X X X         X X X",
             "X   X   P     X   X",
-            "X                 X",
+            "X                1X",
             "XXXXXXXXXXXXXXXXXXX"
             };
             // Level 3 – The Fortress
@@ -198,7 +204,13 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     HashSet<Block> walls;
     HashSet<Block> foods;
     HashSet<Block> ghosts;
+    HashSet<Block> portals;
     Block pacman;
+
+    // portal pairing map: maps a portal char '1'->'2', '2'->'1', '3'->'4', '4'->'3'
+    Map<Character, Character> portalPairMap = new HashMap<>();
+    // quick map portal id -> Block (assumes one portal tile per id; works for your maps)
+    Map<Character, Block> portalById = new HashMap<>();
 
     char[] directions = { 'U', 'D', 'L', 'R' };
     Random random = new Random();
@@ -206,6 +218,9 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     int lives = 3;
     boolean gameOver = false;
     private Timer gameLoop;
+
+    // teleport cooldown (frames) to avoid immediate bounce-back
+    int teleportCooldown = 0;
 
     //constructor
     public PacMan(int level,char maze){
@@ -229,6 +244,12 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         pacmanRightImage = new ImageIcon(getClass().getResource("/images/pacmanRight.png")).getImage();
         skullImage = new ImageIcon(getClass().getResource("/images/skull.png")).getImage();
 
+        // prepare portal pairing
+        portalPairMap.put('1','2');
+        portalPairMap.put('2','1');
+        portalPairMap.put('3','4');
+        portalPairMap.put('4','3');
+
         loadMap();
         for (Block ghost : ghosts) {
             char newDirection = directions[random.nextInt(4)];
@@ -243,6 +264,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         walls = new HashSet<Block>();
         foods = new HashSet<Block>();
         ghosts = new HashSet<Block>();
+        portals = new HashSet<Block>();
         String[] maze={};
 
         if(mazeselected=='A'){
@@ -281,11 +303,32 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
                 } else if (tileCharAtPos == 'p') {
                     Block pinkGhost = new Block(x, y, tileSize, tileSize, pinkGhostImage, x, y);
                     ghosts.add(pinkGhost);
-                }
+                } else if (Character.isDigit(tileCharAtPos)) {
+                    Block portal = new Block(x, y, tileSize, tileSize, null, x, y);
+                    portal.isPortal = true;
+                    portal.portalId = tileCharAtPos;
 
+                    // color for debugging/visuals
+                    switch (tileCharAtPos) {
+                        case '1': portal.portalColor = Color.CYAN; break;
+                        case '2': portal.portalColor = Color.CYAN; break;
+                        case '3': portal.portalColor = Color.GREEN; break;
+                        case '4': portal.portalColor = Color.GREEN; break;
+                        default:  portal.portalColor = Color.WHITE; break;
+                    }
+
+                    // portal collision uses whole tile
+                    portal.width = tileSize;
+                    portal.height = tileSize;
+
+                    portals.add(portal);
+                    // store mapping id -> block (assumes exactly one tile per id on your maps)
+                    portalById.put(tileCharAtPos, portal);
+                }
             }
         }
-    }
+
+}
 
     public void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
@@ -305,6 +348,18 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         for (Block ghost : ghosts) {
             g.drawImage(ghost.image, ghost.x, ghost.y, ghost.width, ghost.height, this);
         }
+
+        // draw portals as colored tiles
+        if (portals != null) {
+            for (Block portal : portals) {
+                g.setColor(portal.portalColor);
+                g.fillRect(portal.x, portal.y, portal.width, portal.height);
+                // optional border for clarity
+                g.setColor(Color.BLACK);
+                g.drawRect(portal.x, portal.y, portal.width, portal.height);
+            }
+        }
+
 
         // draw pacman
         g.drawImage(pacman.image, pacman.x, pacman.y, pacman.width, pacman.height, this);
@@ -358,8 +413,49 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     }
 
     public void move() {
-        pacman.x += pacman.velocityX;
-        pacman.y += pacman.velocityY;
+        // decrement teleport cooldown if active
+        if (teleportCooldown > 0) teleportCooldown--;
+
+        if (pacman != null) {
+            pacman.x += pacman.velocityX;
+            pacman.y += pacman.velocityY;
+        }
+
+        //Teleport portals for levels 1 and 2
+        if (levelselected == 1 || levelselected == 2){
+            if (pacman.x < -pacman.width/2){
+                pacman.x = boardWidth - pacman.width;
+            } else if (pacman.x + pacman.width > boardWidth + pacman.width / 2){
+                pacman.x = 0;
+            }
+        }
+
+        // Portal teleport: deterministic pair mapping (1<->2, 3<->4).
+        // Only active when cooldown == 0
+        if (!gameOver && portals != null && pacman != null && teleportCooldown == 0) {
+            for (Block portal : portals) {
+                if (collision(pacman, portal)) {
+                    char id = portal.portalId;
+                    Character pairedId = portalPairMap.get(id);
+                    if (pairedId != null) {
+                        Block target = portalById.get(pairedId);
+                        if (target != null) {
+                            // Teleport Pac-Man to center of target tile
+                            pacman.x = target.x + (target.width - pacman.width)/2;
+                            pacman.y = target.y + (target.height - pacman.height)/2;
+
+                            // Optional: set direction to same as before or reset velocity
+                            pacman.velocityX = 0;
+                            pacman.velocityY = 0;
+
+                            // set short cooldown so Pac-Man won't immediately re-enter the portal
+                            teleportCooldown = 10; // adjust frames if necessary
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
         // check for wall collisions
         for (Block wall : walls) {
@@ -465,7 +561,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             restartGame();
             return;
         }
-        
+
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             pacman.updateDirection('U');
             pacman.image = pacmanUpImage;
