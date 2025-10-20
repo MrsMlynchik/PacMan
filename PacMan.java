@@ -342,6 +342,12 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             int scoreWidth = g.getFontMetrics().stringWidth(scoreText);
             g.drawString(scoreText, (getWidth() - scoreWidth) / 2, textY + 50);
 
+            //hint
+            g.setFont(new Font("Arial", Font.PLAIN, 24));
+            String restartHint = "Press any key to restart";
+            int hintWidth = g.getFontMetrics().stringWidth(restartHint);
+            g.drawString(restartHint, (getWidth() - hintWidth) / 2, textY + 100);
+
             return;
             // g.drawString("Game over "+ String.valueOf(score), tileSize/2, tileSize/2);
         } else {
@@ -423,6 +429,17 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
                 a.y + a.height > b.y);
     }
 
+    //restart game after losing 
+        public void restartGame() {
+        score = 0;
+        lives = 3;
+        gameOver = false;
+        loadMap();
+        resetPositions();
+        gameLoop.start();
+        repaint();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         move();
@@ -444,6 +461,11 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+        if (gameOver){
+            restartGame();
+            return;
+        }
+        
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             pacman.updateDirection('U');
             pacman.image = pacmanUpImage;
