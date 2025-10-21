@@ -158,11 +158,11 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "X X X XXX X XXX X X",
             "X X X   X X   X X X",
             "X X XXX X XXX X X X",
-            "X X     X     X X X",
+            "X X     X p   X X X",
             "X XXX XXXXXXX XXX X",
             "X2  X   X X   X   X",
             "XXX X X X X X X XXX",
-            "X  b    r p    o  X",
+            "X  b           o  X",
             "XXX X X X X X X XXX",
             "X   X   X X   X   X",
             "X XXX XXXXXXX XXX X",
@@ -172,7 +172,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "X X X XXX XXX X X X",
             "X X X         X X X",
             "X   X   P     X   X",
-            "X                1X",
+            "X          r     1X",
             "XXXXXXXXXXXXXXXXXXX"
             };
             // Level 3 – The Fortress
