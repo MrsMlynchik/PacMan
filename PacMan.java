@@ -178,24 +178,24 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             // Level 3 – The Fortress
     private String[] tileMap3={
             "XXXXXXXXXXXXXXXXXXX",
-            "X        X        X",
+            "X        X  o     X",
             "X XXXX X X XXXX X X",
-            "X X    X X    X X X",
+            "X X r  X X    X X X",
             "X X XX X X XX X X X",
             "X X X       X X X X",
-            "X X X XXXXX X X X X",
+            "X X X XXX X X X X X",
             "X X X X   X X X X X",
-            "X X X X r X X X X X",
+            "X X X X   X X X X X",
             "X X X XXXXX X X X X",
             "X X X   b   X X X X",
-            "X X X XXXXX X X X X",
-            "X X X X o X X X X X",
-            "X X X XXXXX X X X X",
+            "XpX X XXXXX X X X X",
+            "X X X X   X X X X X",
+            "X X X X XXX X X X X",
             "X X X       X X X X",
             "X X XX X X XX X X X",
             "X X    X X    X X X",
             "X XXXX X X XXXX X X",
-            "X   p    P    o   X",
+            "X        P    o   X",
             "X                 X",
             "XXXXXXXXXXXXXXXXXXX"
             };    
@@ -354,7 +354,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             for (Block portal : portals) {
                 g.setColor(portal.portalColor);
                 g.fillRect(portal.x, portal.y, portal.width, portal.height);
-                // optional border for clarity
+                // border for clarity
                 g.setColor(Color.BLACK);
                 g.drawRect(portal.x, portal.y, portal.width, portal.height);
             }
