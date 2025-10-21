@@ -65,7 +65,23 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
 
         void updateVelocity() {
             
-            if(levelselected==2){
+            if(levelselected==1){
+                if (this.direction == 'U') {
+                    this.velocityX = 0;
+                    this.velocityY = -4;
+                } else if (this.direction == 'D') {
+                    this.velocityX = 0;
+                    this.velocityY = 4;
+                } else if (this.direction == 'L') {
+                    this.velocityX = -4;
+                    this.velocityY = 0;
+                } else if (this.direction == 'R') {
+                    this.velocityX = 4;
+                    this.velocityY = 0;
+                }
+
+
+            } else if(levelselected == 2) {
                 if (this.direction == 'U') {
                     this.velocityX = 0;
                     this.velocityY = -4*2;
@@ -79,9 +95,8 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
                     this.velocityX = 4*2 ;
                     this.velocityY = 0;
                 }
-
-
-            }else{
+            }
+            else{
                 if (this.direction == 'U') {
                     this.velocityX = 0;
                     this.velocityY = -4*(levelselected+1) ;
