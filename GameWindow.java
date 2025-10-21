@@ -76,9 +76,9 @@ public class GameWindow extends JFrame implements KeyListener {
         easy.setForeground(Color.WHITE);
         normal.setForeground(Color.WHITE);
         hard.setForeground(Color.WHITE);
-        easy.setFont(new Font("Arial", Font.BOLD, 24));
-        normal.setFont(new Font("Arial", Font.BOLD, 24));
-        hard.setFont(new Font("Arial", Font.BOLD, 24));
+        easy.setFont(new Font("Arial", Font.BOLD, 36));
+        normal.setFont(new Font("Arial", Font.BOLD, 36));
+        hard.setFont(new Font("Arial", Font.BOLD, 36));
         levelPanel.add(easy);
         levelPanel.add(normal);
         levelPanel.add(hard);
