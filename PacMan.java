@@ -421,8 +421,8 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             pacman.y += pacman.velocityY;
         }
 
-        //Teleport portals for levels 1 and 2
-        if (levelselected == 1 || levelselected == 2){
+        //Teleport portals (when it is the end of the screen)
+        if (levelselected == 1 || levelselected == 2 || levelselected == 3){
             if (pacman.x < -pacman.width/2){
                 pacman.x = boardWidth - pacman.width;
             } else if (pacman.x + pacman.width > boardWidth + pacman.width / 2){
