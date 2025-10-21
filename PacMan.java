@@ -162,7 +162,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "X XXX XXXXXXX XXX X",
             "X2  X   X X   X   X",
             "XXX X X X X X X XXX",
-            "X  b           o  X",
+            "   b           o   ",
             "XXX X X X X X X XXX",
             "X   X   X X   X   X",
             "X XXX XXXXXXX XXX X",
@@ -178,11 +178,11 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             // Level 3 – The Fortress
     private String[] tileMap3={
             "XXXXXXXXXXXXXXXXXXX",
-            "X        X  o     X",
+            "X2       X  o    3X",
             "X XXXX X X XXXX X X",
             "X X r  X X    X X X",
             "X X XX X X XX X X X",
-            "X X X       X X X X",
+            "X X X      4X X X X",
             "X X X XXX X X X X X",
             "X X X X   X X X X X",
             "X X X X   X X X X X",
@@ -196,7 +196,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "X X    X X    X X X",
             "X XXXX X X XXXX X X",
             "X        P    o   X",
-            "X                 X",
+            "X                1X",
             "XXXXXXXXXXXXXXXXXXX"
             };    
     
@@ -379,7 +379,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             g.drawImage(skullImage, x, y, imgWidth, imgHeight, this);
 
             // Print "Game Over" message in big white letters
-            g.setColor(Color.RED);
+            g.setColor(Color.LIGHT_GRAY);
             g.setFont(new Font("Arial", Font.BOLD, 72));
 
             String message = "GAME OVER";
