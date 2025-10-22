@@ -95,7 +95,7 @@ public class GameWindow extends JFrame implements KeyListener {
 
         JLabel a = new JLabel("A - Classic", SwingConstants.CENTER);
         JLabel b = new JLabel("B - Crazy", SwingConstants.CENTER);
-        JLabel c = new JLabel("C - Tiny", SwingConstants.CENTER);
+        JLabel c = new JLabel("C - Wall Madness", SwingConstants.CENTER);
         a.setForeground(Color.WHITE);
         b.setForeground(Color.WHITE);
         c.setForeground(Color.WHITE);
