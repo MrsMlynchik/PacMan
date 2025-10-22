@@ -140,6 +140,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     private Image pacmanLeftImage;
     private Image pacmanRightImage;
     private Image skullImage;
+    private Image cherryImage;
 
     // the maze
     // X = Wall, O = nothing, P = PacMan
@@ -200,7 +201,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "X X XX X X XX X X X",
             "X X X      4X X X X",
             "X X X XXX X X X X X",
-            "X X X X   X X X X X",
+            "X X X X   X X X XcX",
             "X X X X   X X X X X",
             "X X X XXXXX X X X X",
             "X X X   b   X X X X",
@@ -212,7 +213,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "X X    X X    X X X",
             "X XXXX X X XXXX X X",
             "X        P    o   X",
-            "X                1X",
+            "Xc               1X",
             "XXXXXXXXXXXXXXXXXXX"
             };    
     
@@ -221,6 +222,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     HashSet<Block> foods;
     HashSet<Block> ghosts;
     HashSet<Block> portals;
+    HashSet<Block> cherries;
     Block pacman;
 
     // portal pairing map: maps a portal char '1'->'2', '2'->'1', '3'->'4', '4'->'3'
@@ -265,6 +267,8 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         pacmanLeftImage = new ImageIcon(getClass().getResource("/images/pacmanLeft.png")).getImage();
         pacmanRightImage = new ImageIcon(getClass().getResource("/images/pacmanRight.png")).getImage();
         skullImage = new ImageIcon(getClass().getResource("/images/skull.png")).getImage();
+        cherryImage = new ImageIcon(getClass().getResource("/images/cherry.png")).getImage();
+
 
         // prepare portal pairing
         portalPairMap.put('1','2');
@@ -287,6 +291,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         foods = new HashSet<Block>();
         ghosts = new HashSet<Block>();
         portals = new HashSet<Block>();
+        cherries = new HashSet<Block>();
         String[] maze={};
 
         if(mazeselected=='A'){
@@ -325,6 +330,9 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
                 } else if (tileCharAtPos == 'p') {
                     Block pinkGhost = new Block(x, y, tileSize, tileSize, pinkGhostImage, x, y);
                     ghosts.add(pinkGhost);
+                }else if (tileCharAtPos == 'c') {
+                    Block cherry = new Block(x, y, tileSize, tileSize, cherryImage, x, y);
+                    cherries.add(cherry);
                 } else if (Character.isDigit(tileCharAtPos)) {
                     Block portal = new Block(x, y, tileSize, tileSize, null, x, y);
                     portal.isPortal = true;
@@ -370,6 +378,11 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         // draw ghosts
         for (Block ghost : ghosts) {
             g.drawImage(ghost.image, ghost.x, ghost.y, ghost.width, ghost.height, this);
+        }
+
+        // draw cherries
+        for (Block cherry : cherries) {
+            g.drawImage(cherry.image, cherry.x, cherry.y, cherry.width, cherry.height, this);
         }
 
         // draw portals as colored tiles
@@ -585,8 +598,17 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             }
         }
         foods.remove(eatenFood);
+        Block eatenCherries = null;
+        for (Block cherry:cherries){
+            if (collision(pacman,cherry)){
+                eatenCherries = cherry;
+                score+=200;
+                break;
+            }
+        }
+        cherries.remove(eatenCherries);
 
-        if (foods.isEmpty()) {
+        if (foods.isEmpty()&&cherries.isEmpty()) {
             loadMap();
             resetPositions();
         }
