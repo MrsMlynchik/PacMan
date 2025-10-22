@@ -305,7 +305,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
                     Block food = new Block(x + 14, y + 14, 4, 4, null, x, y);
                     foods.add(food);
                 } else if (tileCharAtPos == 'P') {
-                    pacman = new Block(x, y, tileSize, tileSize, pacmanRightImage, x, y);
+                    pacman = new Block(x+4, y+4, tileSize-8, tileSize-8, pacmanRightImage, x, y);
                 } else if (tileCharAtPos == 'b') {
                     Block blueGhost = new Block(x, y, tileSize, tileSize, blueGhostImage, x, y);
                     ghosts.add(blueGhost);
