@@ -219,12 +219,12 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         // Maze D - Test Maze
     private String[] tileMap4 = {
         "XXXXXXXXXXXXXXX",
-        "X          X  X",
+        "X1         X  X",
         "XX   P     X  X",
         "X          X  X",
         "Xr            X",
         "X  x    b   XXX",
-        "X  x          X",
+        "X  x         2X",
         "XXXXXXXXXXXXXXX",
     };
     
@@ -238,7 +238,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
 
     // portal pairing map: maps a portal char '1'->'2', '2'->'1', '3'->'4', '4'->'3'
     Map<Character, Character> portalPairMap = new HashMap<>();
-    // quick map portal id -> Block (assumes one portal tile per id; works for your maps)
+    // quick map portal id -> Block (assumes one portal tile per id)
     Map<Character, Block> portalById = new HashMap<>();
 
     char[] directions = { 'U', 'D', 'L', 'R' };
@@ -453,7 +453,6 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             g.drawString(restartHint, (getWidth() - hintWidth) / 2, textY + 100);
 
             return;
-            // g.drawString("Game over "+ String.valueOf(score), tileSize/2, tileSize/2);
         } else {
             g.drawString("Lives x" + String.valueOf(lives), tileSize / 2, tileSize / 2);
             g.drawString("Score: " + String.valueOf(score), tileSize / 2, tileSize / 2 + 20);
@@ -547,7 +546,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
                             pacman.velocityY = 0;
 
                             // set short cooldown so Pac-Man won't immediately re-enter the portal
-                            teleportCooldown = 10; // adjust frames if necessary
+                            teleportCooldown = 10;
                             break;
                         }
                     }
@@ -639,7 +638,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             if (dir == 'L') testX -= step;
             if (dir == 'R') testX += step;
 
-            // create a tolerant rectangle (don't let tolerance make width negative)
+            //a tolerant rectangle (don't let tolerance make width negative)
             int w = Math.max(1, b.width - 2 * TURN_TOLERANCE);
             int h = Math.max(1, b.height - 2 * TURN_TOLERANCE);
             Rectangle nextRect = new Rectangle(testX + TURN_TOLERANCE, testY + TURN_TOLERANCE, w, h);
