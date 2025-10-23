@@ -542,33 +542,6 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             }
         }
 
-        
-        // check for wall collisions
-        boolean hitWall = false;
-        for (Block wall : walls) {
-            if (collision(pacman, wall)) {
-                // Undo last movement
-                pacman.x -= pacman.velocityX;
-                pacman.y -= pacman.velocityY;
-                hitWall = true;
-                break;
-            }
-        }
-
-        if (hitWall) {
-            // Stop any leftover velocity immediately
-            pacman.velocityX = 0;
-            pacman.velocityY = 0;
-
-            // Snap to the nearest tile center (prevents drift)
-            int centerTileX = ((pacman.x + pacman.width / 2) / tileSize) * tileSize + tileSize / 2;
-            int centerTileY = ((pacman.y + pacman.height / 2) / tileSize) * tileSize + tileSize / 2;
-            pacman.x = centerTileX - pacman.width / 2;
-            pacman.y = centerTileY - pacman.height / 2;
-
-            // Also prevent continuous direction movement into the wall
-            nextDirection = '\0';
-        }
 
         // check ghost collision
         for (Block ghost : ghosts) {
