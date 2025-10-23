@@ -96,15 +96,19 @@ public class GameWindow extends JFrame implements KeyListener {
         JLabel a = new JLabel("A - Classic", SwingConstants.CENTER);
         JLabel b = new JLabel("B - Crazy", SwingConstants.CENTER);
         JLabel c = new JLabel("C - Wall Madness", SwingConstants.CENTER);
+        JLabel d = new JLabel("D - Test Maze", SwingConstants.CENTER);
         a.setForeground(Color.WHITE);
         b.setForeground(Color.WHITE);
         c.setForeground(Color.WHITE);
+        d.setForeground(Color.WHITE);
         a.setFont(new Font("Arial", Font.BOLD, 24));
         b.setFont(new Font("Arial", Font.BOLD, 24));
         c.setFont(new Font("Arial", Font.BOLD, 24));
+        d.setFont(new Font("Arial", Font.BOLD, 24 ));
         mazePanel.add(a);
         mazePanel.add(b);
         mazePanel.add(c);
+        mazePanel.add(d);
     }
 
     //State
@@ -127,7 +131,7 @@ public class GameWindow extends JFrame implements KeyListener {
     public void startGame(int level,char maze) {
         // remove any menu panel
         getContentPane().removeAll();
-         // ← uses your PacMan class
+         // uses PacMan class
         gamePanel = new PacMan(level,maze);
         gamePanel.levelselected = level;
         gamePanel.mazeselected = maze;
@@ -186,6 +190,10 @@ public class GameWindow extends JFrame implements KeyListener {
                 }
                 if (e.getKeyCode() == KeyEvent.VK_C) {
                     selectedMaze = 'C';
+                    startGame(selectedLevel, selectedMaze);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_D){
+                    selectedMaze = 'D';
                     startGame(selectedLevel, selectedMaze);
                 }
                 break;

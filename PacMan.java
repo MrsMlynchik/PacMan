@@ -126,7 +126,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     private int columns = 19;
     private int tileSize = 32;
     private int boardWidth = columns * tileSize;
-    private int boardHight = rows * tileSize;
+    private int boardHeight = rows * tileSize;
 
     // images
     private Image wallImage;
@@ -168,8 +168,8 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "X3                X",
             "XXXXXXXXXXXXXXXXXXX"       
             };
-            // Maze B - Twister
-    private String[] tilemap2={
+            // Maze B - Crazy
+    private String[] tileMap2={
             "XXXXXXXXXXXXXXXXXXX",
             "X   X     X    3X X",
             "X X X XXX X XXX X X",
@@ -192,7 +192,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "X          r     1X",
             "XXXXXXXXXXXXXXXXXXX"
             };
-            // Level 3 – The Fortress
+            // Maze C – Wall madness
     private String[] tileMap3={
             "XXXXXXXXXXXXXXXXXXX",
             "X2       X  o    3X",
@@ -215,7 +215,18 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "X        P    o   X",
             "Xc               1X",
             "XXXXXXXXXXXXXXXXXXX"
-            };    
+            };   
+        // Maze D - Test Maze
+    private String[] tileMap4 = {
+        "XXXXXXXXXXXXXXX",
+        "X          X  X",
+        "XX   P     X  X",
+        "X          X  X",
+        "Xr            X",
+        "X  x    b   XXX",
+        "X  x          X",
+        "XXXXXXXXXXXXXXX",
+    };
     
 
     HashSet<Block> walls;
@@ -251,7 +262,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         this.levelselected = level;
         this.mazeselected = maze;
 
-        setPreferredSize(new Dimension(boardWidth, boardHight));
+        setPreferredSize(new Dimension(boardWidth, boardHeight));
         setBackground(Color.BLACK);
         addKeyListener(this);
         setFocusable(true);
@@ -297,9 +308,11 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         if(mazeselected=='A'){
             maze=tileMap1;
         }else if(mazeselected=='B'){
-            maze=tilemap2;
+            maze=tileMap2;
         }else if (mazeselected=='C'){
             maze=tileMap3;
+        } else if (mazeselected == 'D'){
+            maze = tileMap4;
         }
 
         for (int r = 0; r < maze.length; r++) {
@@ -569,7 +582,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
                 }
             }
             //check for board bounce collision (ghosts don't use the tunel)
-            if (newGhostX < 0 || newGhostX + ghost.width > boardWidth || newGhostY < 0 || newGhostY + ghost.height > boardHight){
+            if (newGhostX < 0 || newGhostX + ghost.width > boardWidth || newGhostY < 0 || newGhostY + ghost.height > boardHeight){
                 ghostBlocked = true;
             }
 
