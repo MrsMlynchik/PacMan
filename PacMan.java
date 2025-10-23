@@ -456,14 +456,19 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         // if near center OR current direction is blocked, try the new one
         if (nearTileCenter(pacman, TURN_TOLERANCE) || !canMove(pacman, pacman.direction)) {
             if (canMove(pacman, nextDirection)) {
-                // align only horizontally or vertically, not both
-                int centerX = ((pacman.x + pacman.width/2) / tileSize) * tileSize + tileSize/2;
-                int centerY = ((pacman.y + pacman.height/2) / tileSize) * tileSize + tileSize/2;
-                if (nextDirection == 'L' || nextDirection == 'R')
-                    pacman.y = centerY - pacman.height/2;
-                else
-                    pacman.x = centerX - pacman.width/2;
+                //calculate the center of the current tile
+                int currentTileX = (pacman.x + pacman.width/2) / tileSize;
+                int currentTileY = (pacman.y + pacman.height/2) / tileSize;
 
+                int centerX = currentTileX * tileSize + tileSize/2;
+                int centerY = currentTileY * tileSize + tileSize/2;
+                
+                //snap the opposite axis to the center of the tile path
+                if (nextDirection == 'L' || nextDirection == 'R'){
+                    pacman.y = centerY - pacman.height/2;
+                }else{
+                    pacman.x = centerX - pacman.width/2;
+                } 
                 pacman.updateDirection(nextDirection);
                 nextDirection = '\0';
             }
