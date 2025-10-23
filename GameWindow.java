@@ -64,7 +64,7 @@ public class GameWindow extends JFrame implements KeyListener {
     private void setupLevelSelectPanel(){
         levelPanel = new JPanel();
         levelPanel.setBackground(Color.BLACK);
-        levelPanel.setLayout(new GridLayout(5,1));
+        levelPanel.setLayout(new GridLayout(4,1));
         JLabel label = new JLabel("Select Level:", SwingConstants.CENTER);
         label.setForeground(Color.CYAN);
         label.setFont(new Font("Arial", Font.BOLD, 36));
@@ -87,7 +87,7 @@ public class GameWindow extends JFrame implements KeyListener {
     private void setupMazeSelectPanel(){
         mazePanel = new JPanel();
         mazePanel.setBackground(Color.BLACK);
-        mazePanel.setLayout(new GridLayout(4, 1));
+        mazePanel.setLayout(new GridLayout(5, 1));
         JLabel label = new JLabel("Select Maze:", SwingConstants.CENTER);
         label.setForeground(Color.ORANGE);
         label.setFont(new Font("Arial", Font.BOLD, 36));
