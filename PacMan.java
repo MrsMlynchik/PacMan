@@ -583,17 +583,38 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             if (ghost.y == tileSize * 9 && ghost.direction != 'U' && ghost.direction != 'D') {
                 ghost.updateDirection('U');
             }
-            ghost.x += ghost.velocityX;
-            ghost.y += ghost.velocityY;
+            int newGhostX = ghost.x + ghost.velocityX;
+            int newGhostY = ghost.y + ghost.velocityY;
+            boolean ghostBlocked = false;
+
+            //check for wall collision at the next position
             for (Block wall : walls) {
-                if (collision(ghost, wall) || ghost.x <= 0 || ghost.x + ghost.width >= boardWidth) {
-                    ghost.x -= ghost.velocityX;
-                    ghost.y -= ghost.velocityY;
-                    char newDirection = directions[random.nextInt(4)];
-                    ghost.updateDirection(newDirection);
+                if (new Rectangle(newGhostX, newGhostY, ghost.width, ghost.height)
+                .intersects(new Rectangle(wall.x, wall.y, wall.width, wall.height))){
+                    ghostBlocked = true;
+                    break;
                 }
             }
+            //check for board bounce collision (ghosts don't use the tunel)
+            if (newGhostX < 0 || newGhostX + ghost.width > boardWidth || newGhostY < 0 || newGhostY + ghost.height > boardHight){
+                ghostBlocked = true;
+            }
+
+            if (ghostBlocked){
+                int centerTileX = ((ghost.x + ghost.width/2) / tileSize) * tileSize + tileSize/2;
+                int centerTileY = ((ghost.y + ghost.height/2) / tileSize)* tileSize + tileSize/2;
+                ghost.x = centerTileX - ghost.width/2;
+                ghost.y = centerTileY - ghost.height/2;
+
+                char newDirection = directions[random.nextInt(4)];
+                ghost.updateDirection(newDirection);
+            } else {
+                //move them to the calculated positions
+                ghost.x = newGhostX;
+                ghost.y = newGhostY;
+            }
         }
+
         Block eatenFood = null;
         for (Block food : foods) {
             if (collision(pacman, food)) {
