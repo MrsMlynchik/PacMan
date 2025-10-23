@@ -414,6 +414,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         g.drawImage(pacman.image, pacman.x, pacman.y, pacman.width, pacman.height, this);
 
         // draw score
+        g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.PLAIN, 18));
         if (gameOver) {
             // fil entire panel with blue?

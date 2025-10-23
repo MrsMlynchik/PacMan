@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public class GameWindow extends JFrame implements KeyListener {
     public enum GameState {
-        MENU, LEVEL_SELECT, MAZE_SELECT, PLAYING, GAME_OVER
+        MENU, LEVEL_SELECT, MAZE_SELECT, PLAYING, GAME_OVER, YOU_WON
     }
     public int selectedLevel = 1;
     public char selectedMaze = 'A';
@@ -149,6 +149,11 @@ public class GameWindow extends JFrame implements KeyListener {
         repaint();
         currentState = GameState.MAZE_SELECT;
     }
+
+    public void showYouWon(){
+        getContentPane().removeAll();
+
+    }
      @Override
     public void keyPressed(KeyEvent e) {
     }
@@ -201,6 +206,8 @@ public class GameWindow extends JFrame implements KeyListener {
                 if (gamePanel != null)
                     gamePanel.keyReleased(e);
                 break;
+            case YOU_WON:
+                
         }
     }
 
