@@ -11,12 +11,14 @@ public class GameWindow extends JFrame implements KeyListener {
     public enum GameState {
         MENU, LEVEL_SELECT, MAZE_SELECT, PLAYING, GAME_OVER, YOU_WON
     }
+
     public int selectedLevel = 1;
     public char selectedMaze = 'A';
 
     public GameState currentState = GameState.MENU;
 
     private JPanel menuPanel, levelPanel, mazePanel;
+    public JPanel gamewonPanel;
     public PacMan gamePanel;
 
     public GameWindow() {
@@ -29,8 +31,7 @@ public class GameWindow extends JFrame implements KeyListener {
         setupMenuPanel();
         setupLevelSelectPanel();
         setupMazeSelectPanel();
-
-
+        setupGameWonPanel();
         showMenu();
         setVisible(true);
     }
@@ -60,11 +61,11 @@ public class GameWindow extends JFrame implements KeyListener {
         menuPanel.add(inner);
     }
 
-    //Select Level
-    private void setupLevelSelectPanel(){
+    // Select Level
+    private void setupLevelSelectPanel() {
         levelPanel = new JPanel();
         levelPanel.setBackground(Color.BLACK);
-        levelPanel.setLayout(new GridLayout(4,1));
+        levelPanel.setLayout(new GridLayout(4, 1));
         JLabel label = new JLabel("Select Level:", SwingConstants.CENTER);
         label.setForeground(Color.CYAN);
         label.setFont(new Font("Arial", Font.BOLD, 36));
@@ -83,8 +84,9 @@ public class GameWindow extends JFrame implements KeyListener {
         levelPanel.add(normal);
         levelPanel.add(hard);
     }
+
     // Select Maze
-    private void setupMazeSelectPanel(){
+    private void setupMazeSelectPanel() {
         mazePanel = new JPanel();
         mazePanel.setBackground(Color.BLACK);
         mazePanel.setLayout(new GridLayout(5, 1));
@@ -104,14 +106,29 @@ public class GameWindow extends JFrame implements KeyListener {
         a.setFont(new Font("Arial", Font.BOLD, 24));
         b.setFont(new Font("Arial", Font.BOLD, 24));
         c.setFont(new Font("Arial", Font.BOLD, 24));
-        d.setFont(new Font("Arial", Font.BOLD, 24 ));
+        d.setFont(new Font("Arial", Font.BOLD, 24));
         mazePanel.add(a);
         mazePanel.add(b);
         mazePanel.add(c);
         mazePanel.add(d);
     }
 
-    //State
+    private void setupGameWonPanel() {
+        gamewonPanel = new JPanel();
+        gamewonPanel.setBackground(Color.BLACK);
+
+        JLabel label = new JLabel("Congratulations!", SwingConstants.CENTER);
+        label.setForeground(Color.ORANGE);
+        label.setFont(new Font("Arial", Font.BOLD, 36));
+        gamewonPanel.add(label);
+
+        JLabel hint = new JLabel("Press ENTER to start");
+        hint.setForeground(Color.WHITE);
+        hint.setFont(new Font("Arial", Font.PLAIN, 24));
+        gamewonPanel.add(hint);
+    }
+
+    // State
     public void showMenu() {
         getContentPane().removeAll();
         getContentPane().add(menuPanel);
@@ -120,7 +137,7 @@ public class GameWindow extends JFrame implements KeyListener {
         currentState = GameState.MENU;
     }
 
-    public void showSelectLevel(){
+    public void showSelectLevel() {
         getContentPane().removeAll();
         getContentPane().add(levelPanel);
         revalidate();
@@ -128,11 +145,11 @@ public class GameWindow extends JFrame implements KeyListener {
         currentState = GameState.LEVEL_SELECT;
     }
 
-    public void startGame(int level,char maze) {
+    public void startGame(int level, char maze) {
         // remove any menu panel
         getContentPane().removeAll();
-         // uses PacMan class
-        gamePanel = new PacMan(level,maze);
+        // uses PacMan class
+        gamePanel = new PacMan(level, maze);
         gamePanel.levelselected = level;
         gamePanel.mazeselected = maze;
         getContentPane().add(gamePanel);
@@ -150,11 +167,16 @@ public class GameWindow extends JFrame implements KeyListener {
         currentState = GameState.MAZE_SELECT;
     }
 
-    public void showYouWon(){
+    public void showYouWon() {
         getContentPane().removeAll();
+        getContentPane().add(gamewonPanel);
+        revalidate();
+        repaint();
+        currentState = GameState.YOU_WON;
 
     }
-     @Override
+
+    @Override
     public void keyPressed(KeyEvent e) {
     }
 
@@ -197,7 +219,7 @@ public class GameWindow extends JFrame implements KeyListener {
                     selectedMaze = 'C';
                     startGame(selectedLevel, selectedMaze);
                 }
-                if (e.getKeyCode() == KeyEvent.VK_D){
+                if (e.getKeyCode() == KeyEvent.VK_D) {
                     selectedMaze = 'D';
                     startGame(selectedLevel, selectedMaze);
                 }
@@ -207,14 +229,15 @@ public class GameWindow extends JFrame implements KeyListener {
                     gamePanel.keyReleased(e);
                 break;
             case YOU_WON:
-                
+                if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                    showSelectLevel();
+                break;
+
         }
     }
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new GameWindow());
     }
 
-   
 }

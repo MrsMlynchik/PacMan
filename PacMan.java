@@ -623,8 +623,11 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         if (foods.isEmpty()&&cherries.isEmpty()) {
             loadMap();
             resetPositions();
+            GameWindow gm  = new GameWindow();
+            gm.showYouWon();
         }
     }
+
 
     //Can move function to test whether PacMan can move one step in a given direction
         private boolean canMove(Block b, char dir){
