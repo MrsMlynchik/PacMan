@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -117,15 +118,28 @@ public class GameWindow extends JFrame implements KeyListener {
         gamewonPanel = new JPanel();
         gamewonPanel.setBackground(Color.BLACK);
 
+        JPanel centerJPanel = new JPanel();
+        centerJPanel.setLayout(new BoxLayout(centerJPanel, BoxLayout.Y_AXIS));
+        centerJPanel.setBackground(Color.BLACK);
+
         JLabel label = new JLabel("Congratulations!", SwingConstants.CENTER);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
         label.setForeground(Color.ORANGE);
         label.setFont(new Font("Arial", Font.BOLD, 36));
-        gamewonPanel.add(label);
 
         JLabel hint = new JLabel("Press ENTER to start");
         hint.setForeground(Color.WHITE);
         hint.setFont(new Font("Arial", Font.PLAIN, 24));
-        gamewonPanel.add(hint);
+        hint.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        centerJPanel.add(Box.createVerticalGlue());
+        centerJPanel.add(label);
+        centerJPanel.add(Box.createVerticalStrut(20));
+        centerJPanel.add(hint);
+        centerJPanel.add(Box.createVerticalGlue());
+
+        gamewonPanel.setLayout(new BorderLayout());
+        gamewonPanel.add(centerJPanel, BorderLayout.CENTER);
     }
 
     // State
