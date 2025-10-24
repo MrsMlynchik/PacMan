@@ -47,21 +47,40 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             this.startY = y;
         }
 
-        void updateDirection(char direction) {
-            char previousDirection = this.direction;
-            this.direction = direction;
+        void updateDirection(char newDir) {
+            //remember old direction
+            char oldDirection = this.direction;
+            
+            this.direction = newDir;
             updateVelocity();
-            this.x += this.velocityX;
-            this.y += this.velocityY;
+
+            int testX = this.x + this.velocityX;
+            int testY = this.y + this.velocityY;
+
+            Rectangle nexRectangle = new Rectangle(testX, testY, this.width, this.height);
+            boolean blocked = false;
             for (Block wall : walls) {
-                if (collision(this, wall)) {
-                    // collision detected, move back to previous position
-                    this.x -= this.velocityX;
-                    this.y -= this.velocityY;
-                    this.direction = previousDirection;
-                    updateVelocity();
-                }
+            Rectangle wallRect = new Rectangle(wall.x, wall.y, wall.width, wall.height);
+            if (nexRectangle.intersects(wallRect)) {
+                blocked = true;
+                break;
             }
+        }
+
+            if (blocked) {
+                this.direction = oldDirection;
+                updateVelocity();
+                return;
+            }
+
+            if (this == pacman) {
+            switch (newDir) {
+                case 'U': this.image = pacmanUpImage; break;
+                case 'D': this.image = pacmanDownImage; break;
+                case 'L': this.image = pacmanLeftImage; break;
+                case 'R': this.image = pacmanRightImage; break;
+            }
+        }
         }
 
         void updateVelocity() {
@@ -255,7 +274,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     char nextDirection = '\0';
 
     //how many pixels to forgive when we are checking the space
-    final int TURN_TOLERANCE = 2;
+    final int TURN_TOLERANCE = 6;
 
     //constructor
     public PacMan(int level,char maze){
@@ -632,7 +651,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     //Can move function to test whether PacMan can move one step in a given direction
         private boolean canMove(Block b, char dir){
             if (b == null || walls == null) return false;
-            int step = Math.max(1, Math.min(4, tileSize / 4)); 
+            int step = Math.max(1, Math.min(1, tileSize / 8)); 
 
             int testX = b.x;
             int testY = b.y;
@@ -720,6 +739,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         char desired = '\0';
         Image desiredImg = null;
 
+
     if (e.getKeyCode() == KeyEvent.VK_UP) {
         desired = 'U';
         desiredImg = pacmanUpImage;
@@ -735,8 +755,6 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     }
 
     if (desired != '\0') {
-        // Update sprite immediately
-        pacman.image = desiredImg;
 
         // If can move right now, do it immediately
         if (canMove(pacman, desired) && nearTileCenter(pacman, TURN_TOLERANCE)) {
