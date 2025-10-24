@@ -187,7 +187,6 @@ public class GameWindow extends JFrame implements KeyListener {
         revalidate();
         repaint();
         currentState = GameState.YOU_WON;
-
     }
 
     @Override
@@ -253,5 +252,6 @@ public class GameWindow extends JFrame implements KeyListener {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new GameWindow());
     }
+
 
 }

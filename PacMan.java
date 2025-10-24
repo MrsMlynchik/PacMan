@@ -644,6 +644,8 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             resetPositions();
             GameWindow gm  = new GameWindow();
             gm.showYouWon();
+            JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(PacMan.this);
+            currentFrame.dispose();
         }
     }
 
