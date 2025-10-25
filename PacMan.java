@@ -164,7 +164,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     // the maze
     // X = Wall, O = nothing, P = PacMan
     // Ghosts: b = blue, r = red, o = orange, p = pink
-    private String[] tileMap1 = {
+    public static String[] tileMap1 = {
             "XXXXXXXXXXXXXXXXXXX",
             "X        X       4X",
             "X XX XXX X XXX XX X",
@@ -188,7 +188,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "XXXXXXXXXXXXXXXXXXX"       
             };
             // Maze B - Crazy
-    private String[] tileMap2={
+    public static String[] tileMap2={
             "XXXXXXXXXXXXXXXXXXX",
             "X   X     X    3X X",
             "X X X XXX X XXX X X",
@@ -212,7 +212,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "XXXXXXXXXXXXXXXXXXX"
             };
             // Maze C – Wall madness
-    private String[] tileMap3={
+    public static String[] tileMap3={
             "XXXXXXXXXXXXXXXXXXX",
             "X2       X  o    3X",
             "X XXXX X X XXXX X X",
@@ -236,7 +236,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "XXXXXXXXXXXXXXXXXXX"
             };   
         // Maze D - Test Maze
-    private String[] tileMap4 = {
+    public static String[] tileMap4 = {
         "XXXXXXXXXXXXXXX",
         "X1         X  X",
         "XX   P     X  X",

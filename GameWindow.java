@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.*;
@@ -86,17 +87,76 @@ public class GameWindow extends JFrame implements KeyListener {
         levelPanel.add(hard);
     }
 
+    //Small preview of maze layout
+    public class MazePreviewPanel extends JPanel {
+        private String[] maze;
+        private int tileSize = 4;
+
+        public MazePreviewPanel(String[] maze){
+            this.maze = maze;
+            int maxWidth = 0;
+            for (String row : maze) {
+                if (row.length() > maxWidth) {
+                    maxWidth = row.length();
+                }
+            }
+            int width = maxWidth * tileSize;
+            int height = maze.length * tileSize;
+
+            setPreferredSize(new Dimension(width, height));
+            setBackground(Color.BLACK);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g){
+            super.paintComponent(g);
+
+            for (int r = 0; r < maze.length; r++){
+                String row = maze[r];
+                for (int c = 0; c < row.length(); c++){
+                    char ch = row.charAt(c);
+                    int x = c * tileSize;
+                    int y = r * tileSize;
+
+                    switch (ch) {
+                        case 'X': //walls
+                            g.setColor(Color.BLUE);
+                            g.fillRect(x, y, tileSize, tileSize);
+                            break;
+                        case 'P':
+                            g.setColor(Color.YELLOW);
+                            g.fillOval(x + 1, y + 1, tileSize - 2, tileSize - 2);
+                            break;
+                        case 'b' : case 'r' : case 'o' : case 'p':
+                            g.setColor(Color.ORANGE);
+                            g.fillOval(x + 2, y + 2, tileSize - 2, tileSize - 2);
+                            break;
+                        case 'c':
+                            g.setColor(Color.PINK);
+                            g.fillOval(x + 3, y + 3, tileSize - 2, tileSize - 2);
+                            break;
+                        default:
+                            g.setColor(Color.BLACK);
+                            g.fillRect(x, y, tileSize, tileSize);
+                            break;
+                    }
+                }
+            }
+
+        }
+    }
+
     // Select Maze
     private void setupMazeSelectPanel() {
         mazePanel = new JPanel();
         mazePanel.setBackground(Color.BLACK);
-        mazePanel.setLayout(new GridLayout(5, 1));
+        mazePanel.setLayout(new BoxLayout(mazePanel, BoxLayout.Y_AXIS));
         JLabel label = new JLabel("Select Maze:", SwingConstants.CENTER);
         label.setForeground(Color.ORANGE);
         label.setFont(new Font("Arial", Font.BOLD, 36));
         mazePanel.add(label);
 
-        JLabel a = new JLabel("A - Classic", SwingConstants.CENTER);
+        /*JLabel a = new JLabel("A - Classic", SwingConstants.CENTER);
         JLabel b = new JLabel("B - Crazy", SwingConstants.CENTER);
         JLabel c = new JLabel("C - Wall Madness", SwingConstants.CENTER);
         JLabel d = new JLabel("D - Test Maze", SwingConstants.CENTER);
@@ -111,8 +171,35 @@ public class GameWindow extends JFrame implements KeyListener {
         mazePanel.add(a);
         mazePanel.add(b);
         mazePanel.add(c);
-        mazePanel.add(d);
+        mazePanel.add(d);*/
+        mazePanel.add(makeMazeOption("A - Classic", Color.WHITE, PacMan.tileMap1));
+        mazePanel.add(makeMazeOption("B - Crazy", Color.WHITE, PacMan.tileMap2));
+        mazePanel.add(makeMazeOption("C - Wall Madness", Color.WHITE, PacMan.tileMap3));
+        mazePanel.add(makeMazeOption("D - Test Maze", Color.WHITE, PacMan.tileMap4));
     }
+
+        private JPanel makeMazeOption(String text, Color color, String[] map) {
+        JPanel container = new JPanel();
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        container.setBackground(Color.BLACK);
+        container.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        MazePreviewPanel preview = new MazePreviewPanel(map);
+        preview.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel label = new JLabel(text, SwingConstants.CENTER);
+        label.setForeground(color);
+        label.setFont(new Font("Arial", Font.BOLD, 24));
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        container.add(preview);
+        container.add(Box.createRigidArea(new Dimension(0, 10)));
+        container.add(label);
+        container.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        return container;
+    }
+
 
     private void setupGameWonPanel() {
         gamewonPanel = new JPanel();
