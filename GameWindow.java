@@ -151,6 +151,7 @@ public class GameWindow extends JFrame implements KeyListener {
         mazePanel = new JPanel();
         mazePanel.setBackground(Color.BLACK);
         mazePanel.setLayout(new BoxLayout(mazePanel, BoxLayout.Y_AXIS));
+        mazePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         JLabel label = new JLabel("Select Maze:", SwingConstants.CENTER);
         label.setForeground(Color.ORANGE);
         label.setFont(new Font("Arial", Font.BOLD, 36));
