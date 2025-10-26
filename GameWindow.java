@@ -163,22 +163,6 @@ public class GameWindow extends JFrame implements KeyListener {
         label.setFont(new Font("Arial", Font.BOLD, 36));
         mazePanel.add(label);
 
-        /*JLabel a = new JLabel("A - Classic", SwingConstants.CENTER);
-        JLabel b = new JLabel("B - Crazy", SwingConstants.CENTER);
-        JLabel c = new JLabel("C - Wall Madness", SwingConstants.CENTER);
-        JLabel d = new JLabel("D - Test Maze", SwingConstants.CENTER);
-        a.setForeground(Color.WHITE);
-        b.setForeground(Color.WHITE);
-        c.setForeground(Color.WHITE);
-        d.setForeground(Color.WHITE);
-        a.setFont(new Font("Arial", Font.BOLD, 24));
-        b.setFont(new Font("Arial", Font.BOLD, 24));
-        c.setFont(new Font("Arial", Font.BOLD, 24));
-        d.setFont(new Font("Arial", Font.BOLD, 24));
-        mazePanel.add(a);
-        mazePanel.add(b);
-        mazePanel.add(c);
-        mazePanel.add(d);*/
         mazePanel.add(makeMazeOption("A - Classic", Color.WHITE, PacMan.tileMap1));
         mazePanel.add(makeMazeOption("B - Crazy", Color.WHITE, PacMan.tileMap2));
         mazePanel.add(makeMazeOption("C - Wall Madness", Color.WHITE, PacMan.tileMap3));
