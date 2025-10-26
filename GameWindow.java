@@ -9,7 +9,14 @@ import java.awt.GridLayout;
 import java.awt.event.*;
 import javax.swing.*;
 
+/**
+ * View of the PacMan program.
+ */
 public class GameWindow extends JFrame implements KeyListener {
+
+    /**
+     * Game states.
+     */
     public enum GameState {
         MENU, LEVEL_SELECT, MAZE_SELECT, PLAYING, GAME_OVER, YOU_WON
     }
@@ -19,10 +26,15 @@ public class GameWindow extends JFrame implements KeyListener {
 
     public GameState currentState = GameState.MENU;
 
-    private JPanel menuPanel, levelPanel, mazePanel,gamewonPanel;
-    
+    private JPanel menuPanel;
+    private JPanel levelPanel;
+    private JPanel mazePanel;
+    private JPanel gamewonPanel;
     public PacMan gamePanel;
 
+    /**
+    * Game Window of PacMan.
+    */
     public GameWindow() {
         setTitle("Pac-Man");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -87,12 +99,17 @@ public class GameWindow extends JFrame implements KeyListener {
         levelPanel.add(hard);
     }
 
-    //Small preview of maze layout
+    /**
+    * maze preview for maze select.
+    */
     public class MazePreviewPanel extends JPanel {
         private String[] maze;
         private int tileSize = 4;
 
-        public MazePreviewPanel(String[] maze){
+        /**
+        * maze preview for maze select.
+        */
+        public MazePreviewPanel(String[] maze) {
             this.maze = maze;
             int maxWidth = 0;
             for (String row : maze) {
@@ -108,7 +125,7 @@ public class GameWindow extends JFrame implements KeyListener {
         }
 
         @Override
-        protected void paintComponent(Graphics g){
+        protected void paintComponent(Graphics g) {
             super.paintComponent(g);
 
             int mazeWidth = maze[0].length() * tileSize;
@@ -117,15 +134,15 @@ public class GameWindow extends JFrame implements KeyListener {
             int offsetX = (getWidth() - mazeWidth) / 2;
             int offsetY = (getHeight() - mazeHeight) / 2;
 
-            for (int r = 0; r < maze.length; r++){
+            for (int r = 0; r < maze.length; r++) {
                 String row = maze[r];
-                for (int c = 0; c < row.length(); c++){
+                for (int c = 0; c < row.length(); c++) {
                     char ch = row.charAt(c);
                     int x = offsetX + c * tileSize;
                     int y = offsetY + r * tileSize;
 
                     switch (ch) {
-                        case 'X': //walls
+                        case 'X': // walls
                             g.setColor(Color.BLUE);
                             g.fillRect(x, y, tileSize, tileSize);
                             break;
@@ -133,7 +150,10 @@ public class GameWindow extends JFrame implements KeyListener {
                             g.setColor(Color.YELLOW);
                             g.fillOval(x + 1, y + 1, tileSize - 2, tileSize - 2);
                             break;
-                        case 'b' : case 'r' : case 'o' : case 'p':
+                        case 'b':
+                        case 'r':
+                        case 'o':
+                        case 'p':
                             g.setColor(Color.ORANGE);
                             g.fillOval(x + 2, y + 2, tileSize - 2, tileSize - 2);
                             break;
@@ -169,7 +189,7 @@ public class GameWindow extends JFrame implements KeyListener {
         mazePanel.add(makeMazeOption("D - Test Maze", Color.WHITE, PacMan.tileMap4));
     }
 
-        private JPanel makeMazeOption(String text, Color color, String[] map) {
+    private JPanel makeMazeOption(String text, Color color, String[] map) {
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         container.setBackground(Color.BLACK);
@@ -190,7 +210,6 @@ public class GameWindow extends JFrame implements KeyListener {
 
         return container;
     }
-
 
     private void setupGameWonPanel() {
         gamewonPanel = new JPanel();
@@ -219,8 +238,10 @@ public class GameWindow extends JFrame implements KeyListener {
         gamewonPanel.setLayout(new BorderLayout());
         gamewonPanel.add(centerJPanel, BorderLayout.CENTER);
     }
-
-    // State
+ 
+    /**
+    * Show menu.
+    */
     public void showMenu() {
         getContentPane().removeAll();
         getContentPane().add(menuPanel);
@@ -229,6 +250,9 @@ public class GameWindow extends JFrame implements KeyListener {
         currentState = GameState.MENU;
     }
 
+    /**
+    * Show levels.
+    */
     public void showSelectLevel() {
         getContentPane().removeAll();
         getContentPane().add(levelPanel);
@@ -237,6 +261,9 @@ public class GameWindow extends JFrame implements KeyListener {
         currentState = GameState.LEVEL_SELECT;
     }
 
+    /**
+    * Start PacMan game.
+    */
     public void startGame(int level, char maze) {
         // remove any menu panel
         getContentPane().removeAll();
@@ -250,6 +277,9 @@ public class GameWindow extends JFrame implements KeyListener {
         currentState = GameState.PLAYING;
     }
 
+    /**
+    * Show maze select.
+    */
     public void showSelectMaze() {
         // TODO Auto-generated method stub
         getContentPane().removeAll();
@@ -259,6 +289,9 @@ public class GameWindow extends JFrame implements KeyListener {
         currentState = GameState.MAZE_SELECT;
     }
 
+    /**
+    * You won panel.
+    */
     public void showYouWon() {
         getContentPane().removeAll();
         getContentPane().add(gamewonPanel);
@@ -330,6 +363,5 @@ public class GameWindow extends JFrame implements KeyListener {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new GameWindow());
     }
-
 
 }
