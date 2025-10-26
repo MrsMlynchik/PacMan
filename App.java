@@ -2,8 +2,9 @@ import javax.swing.JFrame;
 
 public class App {
     public static void main(String[] args) {
+        javax.swing.SwingUtilities.invokeLater(GameWindow::new);
         // Dimensions of the window
-        int rows = 21;
+       /* int rows = 21;
         int columns = 19;
         int tileSize = 32;
         int boardWidth = columns * tileSize;
@@ -17,10 +18,10 @@ public class App {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //JPanel
-        PacMan pacManGame = new PacMan(1, 'A');
+       PacMan pacManGame = new PacMan();
         frame.add(pacManGame);
         frame.pack();
         pacManGame.requestFocus();
-        frame.setVisible(true);
+        frame.setVisible(true);*/
     }
 }
