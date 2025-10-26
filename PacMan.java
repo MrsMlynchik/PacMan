@@ -241,9 +241,9 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         "X1         X  X",
         "XX   P     X  X",
         "X          X  X",
-        "X             X",
+        "X        b    X",
         "X  X        XXX",
-        "X  X         2X",
+        "X  X  c      2X",
         "XXXXXXXXXXXXXXX",
     };
     
