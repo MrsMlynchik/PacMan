@@ -763,7 +763,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             pacman.updateDirection(desired);
             nextDirection = '\0';
         } else {
-            // Otherwise, queue it
+            // Otherwise, quite it
             nextDirection = desired;
         }
     }
