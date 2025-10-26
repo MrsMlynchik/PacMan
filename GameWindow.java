@@ -111,12 +111,18 @@ public class GameWindow extends JFrame implements KeyListener {
         protected void paintComponent(Graphics g){
             super.paintComponent(g);
 
+            int mazeWidth = maze[0].length() * tileSize;
+            int mazeHeight = maze.length * tileSize;
+
+            int offsetX = (getWidth() - mazeWidth) / 2;
+            int offsetY = (getHeight() - mazeHeight) / 2;
+
             for (int r = 0; r < maze.length; r++){
                 String row = maze[r];
                 for (int c = 0; c < row.length(); c++){
                     char ch = row.charAt(c);
-                    int x = c * tileSize;
-                    int y = r * tileSize;
+                    int x = offsetX + c * tileSize;
+                    int y = offsetY + r * tileSize;
 
                     switch (ch) {
                         case 'X': //walls
