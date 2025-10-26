@@ -17,7 +17,7 @@ public class App {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //JPanel
-        PacMan pacManGame = new PacMan();
+        PacMan pacManGame = new PacMan(1, 'A');
         frame.add(pacManGame);
         frame.pack();
         pacManGame.requestFocus();
